@@ -15,11 +15,7 @@ import kotlinx.coroutines.launch
 
 class BlankFragment : Fragment() {
 
-    private var _binding: FragmentBlankBinding? = null
-
-    private val binding get() = _binding!!
-
-    private var currentValue: Int? = null
+    private lateinit var binding: FragmentBlankBinding
 
     override fun onCreateView(
 
@@ -28,7 +24,7 @@ class BlankFragment : Fragment() {
 
     ): View? {
 
-        _binding = FragmentBlankBinding.inflate(inflater, container, false)
+        binding = FragmentBlankBinding.inflate(inflater)
         return binding.root
 
     }
@@ -36,21 +32,27 @@ class BlankFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentBlankBinding.bind(view)
-
         binding.button.setOnClickListener {
-            viewLifecycleOwner.lifecycleScope.launch {
-                val number = addNumber(binding)
-                binding.textview.text = number?.toString()
+            lifecycleScope.launch {
+                binding.textview.text = addNumber().toString()
+            }
+            binding.edittext.text.clear()
+        }
+    }
+
+    suspend fun addNumber(): Int? {
+        val number = binding.edittext.text.toString().toIntOrNull()
+        delay(2000)
+
+        val condition = binding.edittext.text.isNullOrEmpty()
+        if (condition) {
+            binding.button.setOnClickListener {
+                val numberOnTextView = binding.textview.text.toString().toInt()
+                binding.textview.text = numberOnTextView.plus(1).toString()
             }
         }
+        return number
     }
-
-    suspend fun addNumber(binding: FragmentBlankBinding): Int? {
-            val number = binding.edittext.text.toString().toIntOrNull()
-            delay(2000)
-            return number?.plus(1)
-        }
-    }
+}
 
 
