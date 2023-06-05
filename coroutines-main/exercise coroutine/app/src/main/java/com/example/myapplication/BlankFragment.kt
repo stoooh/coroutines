@@ -22,7 +22,7 @@ class BlankFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
 
-    ): View? {
+    ): View {
 
         binding = FragmentBlankBinding.inflate(inflater)
         return binding.root
@@ -33,25 +33,19 @@ class BlankFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.button.setOnClickListener {
-            lifecycleScope.launch {
-                binding.textview.text = addNumber().toString()
+
+            val number = binding.edittext.text.toString().toIntOrNull()
+            viewLifecycleOwner.lifecycleScope.launch {
+                addNumber(number)
             }
             binding.edittext.text.clear()
         }
     }
 
-    suspend fun addNumber(): Int? {
-        val number = binding.edittext.text.toString().toIntOrNull()
+    private suspend fun addNumber(number: Int?) {
+        val result = number?.plus(1) ?: binding.textview.text.toString().toIntOrNull()?.plus(1)
+        binding.textview.text = result?.toString()
         delay(2000)
-
-        val condition = binding.edittext.text.isNullOrEmpty()
-        if (condition) {
-            binding.button.setOnClickListener {
-                val numberOnTextView = binding.textview.text.toString().toInt()
-                binding.textview.text = numberOnTextView.plus(1).toString()
-            }
-        }
-        return number
     }
 }
 

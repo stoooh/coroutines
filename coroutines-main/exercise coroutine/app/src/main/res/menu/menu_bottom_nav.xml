@@ -7,6 +7,6 @@
         android:title="home"/>
     <item
         android:id="@+id/call"
-        android:icon="@drawable/baseline_call_24"
-        android:title="call"/>
+        android:icon="@drawable/baseline_format_list_bulleted_24"
+        android:title="Rick and Morty"/>
 </menu>

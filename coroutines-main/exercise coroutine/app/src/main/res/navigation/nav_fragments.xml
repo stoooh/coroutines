@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/call"
-        android:name="com.example.myapplication.SecondFragment"
+        android:name="com.example.myapplication.FragmentRickAndMorty"
         android:label="call"
         tools:layout="@layout/fragment_second" />
 
